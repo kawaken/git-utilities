@@ -1,0 +1,23 @@
+#!/bin/bash
+
+GITHUB_URLS=("gh:kawaken/" "https://github.com/kawaken/")
+GITHUB_USER_NAME='Kentaro Kawano'
+GITHUB_USER_EMAIL='kentaro.kawano@gmail.com'
+
+user_name=`git config user.name`
+user_email=`git config user.email`
+
+for url in ${GITHUB_URLS[@]}; do
+  if (git remote -v | grep -e $url -q) && \
+    ([[ $GITHUB_USER_NAME != $user_name ]] || \
+    [[ $GITHUB_USER_EMAIL != $user_email ]]); then
+    cat <<MSG
+You are using github repository.
+And your user info are invalid.
+
+$user_name <$user_email>
+MSG
+
+    exit 1
+  fi
+done
