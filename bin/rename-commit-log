@@ -1,14 +1,20 @@
 #!/bin/bash
 
-read -p 'author name:' author_name
+read -p 'author name: ' author_name
 read -p 'author_email: ' author_email
 read -p 'commiter name: ' commiter_name
 read -p 'commiter email: ' commiter_email
 
+export author_name
+export author_email
+export commiter_name
+export commiter_email
+
+
 git filter-branch --commit-filter '
-  GIT_AUTHOR_NAME="${author_name}"
-  GIT_AUTHOR_EMAIL="${author_email}"
-  GIT_COMMITER_NAME="${commiter_name}"
-  GIT_COMMITER_EMAIL="${commiter_email}"
+  GIT_AUTHOR_NAME="${author_name}";
+  GIT_AUTHOR_EMAIL="${author_email}";
+  GIT_COMMITER_NAME="${commiter_name}";
+  GIT_COMMITER_EMAIL="${commiter_email}";
   git commit-tree "$@"
 ' HEAD
