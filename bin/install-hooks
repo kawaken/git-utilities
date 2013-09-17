@@ -1,0 +1,23 @@
+#!/bin/bash
+
+repo_root=`git rev-parse --show-toplevel` || exit $?
+
+cp -i -r "${repo_root}/hooks" $HOME/.git-hooks
+
+read -p "Apply hooks to current working copies? [y/N]: " ans
+
+if [ "${ans}" != "y" ]; then
+  exit 0
+fi
+
+read -p "Where is your project dir: " dir
+
+for git_dir in `find $dir -type d -name .git`; do
+  proj_dir=${git_dir%/*}
+  echo -e "\e[33m${proj_dir}\e[m"
+  ( cd $proj_dir; git remote -v )
+  read -p "Apply? [y/N]: " ans
+  if [ "${ans}" = "y" ]; then
+    ( cd $proj_dir; git init )
+  fi
+done
